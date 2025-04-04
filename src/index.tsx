@@ -14,7 +14,7 @@ import React, {
   useState,
 } from 'react';
 import { DataSet } from 'vis-data';
-import { DeepPartial } from 'vis-data/declarations/data-interface';
+import { DeepPartial, OptId } from 'vis-data/declarations/data-interface';
 import {
   Edge,
   IdType,
@@ -56,7 +56,7 @@ function useSealedState<T>(value: T | (() => T)) {
 /**
  * https://github.com/crubier/react-graph-vis/commit/68bf2e27b2046d6c0bb8b334c2cf974d23443264
  */
-function diff<T extends { id?: IdType }>(
+function diff<T extends { id?: OptId }>(
   from: T[],
   to: T[],
   field: keyof T = 'id'
@@ -126,7 +126,7 @@ function shallowClone<T>(array: T[]): T[] {
   return array.map((value) => ({ ...value }));
 }
 
-function useDataset<T>(values: T[]) {
+function useDataset<T extends Partial<Record<"id", OptId>>>(values: T[]) {
   // Shallow clone dataSet to ensure props aren't mutated!
   const dataSet = useSealedState(() => new DataSet<T>(shallowClone(values)));
   const prevValues = useRef(values);
@@ -138,7 +138,7 @@ function useDataset<T>(values: T[]) {
 
     dataSet.remove(removed);
     if (added.length) {
-      dataSet.add(shallowClone(added));
+      dataSet.add(shallowClone(added) as T[]);
     }
     if (updated.length) {
       // cast needed for update to not complain about the generic type

@@ -1,10 +1,12 @@
 {
   "include": ["src", "types"],
   "compilerOptions": {
-    "module": "esnext",
+    "module": "ESNext",
+    "target": "ES2020",
     "lib": ["dom", "esnext"],
     "importHelpers": true,
     "declaration": true,
+    "declarationDir": "./dist/types",
     "sourceMap": true,
     "rootDir": "./src",
     "strict": true,
@@ -17,7 +19,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false,
+    "outDir": "./dist"
   },
   "types": ["resize-observer-browser"]
 }
